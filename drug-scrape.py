@@ -45,7 +45,7 @@ notes = []
 #begin webdriver
 driver = webdriver.Chrome(executable_path="./chromedriver.exe") #??
 
-driver.get("https://amhonline-amh-net-au.ezproxy1.library.usyd.edu.au/drugs/monographs")
+driver.get(details.scrape_link)
 time.sleep(1);
 #click accept button on uniKey paywall page
 driver.find_element_by_class_name('accept').click();
