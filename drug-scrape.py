@@ -46,16 +46,16 @@ notes = []
 driver = webdriver.Chrome(executable_path="./chromedriver.exe") #??
 
 driver.get("https://amhonline-amh-net-au.ezproxy1.library.usyd.edu.au/drugs/monographs")
-time.sleep(2);
+time.sleep(1);
 #click accept button on uniKey paywall page
 driver.find_element_by_class_name('accept').click();
-time.sleep(2);
+time.sleep(1);
 
 #fill in login details and submit form for login
 driver.find_element_by_id('userNameInput').send_keys(details.email)
 driver.find_element_by_id('passwordInput').send_keys(details.password)
 driver.find_element_by_id('submitButton').click();
-time.sleep(5);
+time.sleep(1);
 
 contentList = driver.find_elements_by_class_name('index')[6].find_elements_by_tag_name('a')
 
@@ -64,11 +64,10 @@ links = []
 for item in contentList:
     links.append(item.get_attribute('href'))
 
-for i in range(0, 3):
-  link = links[i]
+for link in links:
   driver.get(link)
   # time.sleep(1)
-  print(link)
+  # print(link)
   # title = driver.find_elements_by_tag_name('header')[1].find_elements_by_tag_name('h1')[0].text
   # MOA = driver.get_elements_by_class_name('mode-action')[1].text
   # indication = driver.get_elements_by_class_name('indication')[1].text
@@ -78,38 +77,38 @@ for i in range(0, 3):
   field = "'"
   try:
     title = driver.find_elements_by_tag_name('header')[1].find_elements_by_tag_name('h1')[0].text
-    field += title + ": <br /> ";
+    field += "<b>" + title + " </b>" + ": <br /> ";
   except:
     print("Title not found")
 
-  field += "Link: " + link + " <br /> "
+  field += "<b> Link: </b> " + link + " <br /> "
   try:
-    MOA = driver.find_elements_by_class_name('mode-action')[1].text.replace('\n', ':').replace('\r', ';;')
-    field += "{{c1::MOA: " + MOA + "}} <br /> "
+    MOA = driver.find_elements_by_class_name('mode-action')[1].text.replace('\n', ' <br/>').replace('Mode of action:', '')
+    field += "<br /><b> Mechanism of action: </b> <br /> {{c1:: " + MOA + "}} <br /> "
   except:
     print("MOA not found")
 
   try:
-    indication = driver.find_elements_by_class_name('indication')[1].text.replace('\n', ':').replace('\r', ';;')
-    field += "{{c2::Indication: " + indication + "}} <br /> "
+    indication = driver.find_elements_by_class_name('indication')[1].text.replace('\n', ' <br/>').replace('Indications:', '')
+    field += "<br /><b> Indication: </b> <br /> {{c2::" + indication + "}} <br /> "
   except:
     print("Indication not found")
 
   try:
-    adv_eff = driver.find_elements_by_class_name('adv-eff')[1].text.replace('\n', ':').replace('\r', ';;')
-    field += "{{c3::Adverse effects: " + adv_eff + "}} <br /> "
+    adv_eff = driver.find_elements_by_class_name('adv-eff')[1].text.replace('\n', ' <br/>').replace('Adverse effects:', '')
+    field += "<br /><b> Adverse effects </b> <br /> {{c3::" + adv_eff + "}} <br /> "
   except:
     print("adverse effects not found")
 
   try:
-    dosage = driver.find_elements_by_class_name('dosage')[1].text.replace('\n', ':').replace('\r', ';;')
-    field += "{{c4::Dosage: " + dosage + "}} <br /> "
+    dosage = driver.find_elements_by_class_name('dosage')[1].text.replace('\n', ' <br/>').replace('Dosage –', '')
+    field += "<br /><b> Dosage </b> <br /> {{c4::" + dosage + "}} <br /> "
   except:
     print("dosage not found")
     
   try:
-    prac_pts = driver.find_elements_by_class_name('prac-pts')[1].text.replace('\n', ':').replace('\r', ';;')
-    field += "{{c5::Practical points: " + prac_pts + "}}"
+    prac_pts = driver.find_elements_by_class_name('prac-pts')[1].text.replace('\n', ' <br/>').replace('Practice points:', ' ')
+    field += "<br /><b> Practical points </b> <br /> {{c5::" + prac_pts + "}}"
   except:
     print("practical points not found")
   
